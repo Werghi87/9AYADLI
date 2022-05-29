@@ -3,6 +3,7 @@ package com.example.a9ayadli;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,13 +12,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
 
 public class UpdateActivity extends AppCompatActivity {
 
     EditText title_input, Date_input, notes_input;
 
-    Button update_button, delete_button;
+    AppCompatButton update_button, delete_button;
 
     String id, title, ddl, notes;
 
@@ -26,6 +30,7 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+
         title_input = findViewById(R.id.title_input2);
         Date_input = findViewById(R.id.Date_input2);
         notes_input = findViewById(R.id.notes_input2);
@@ -33,7 +38,7 @@ public class UpdateActivity extends AppCompatActivity {
         delete_button = findViewById(R.id.delete_button);
 
         //First we call this
-        getAndSetIntentData();
+        //getAndSetIntentData();
 
         //Set actionbar title after getAndSetIntentData method
         ActionBar ab = getSupportActionBar();
@@ -46,22 +51,49 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //And only then we call this
                 MyDatabaseHelper myDB = new MyDatabaseHelper(UpdateActivity.this);
+
+                if( savedInstanceState==null){
+
+                    Bundle extras = getIntent().getExtras();
+                    if (extras==null){
+                        id=null;
+                    }else   {
+                        id=extras.getString("id");
+                    }
+                }else{
+                    id=(String) savedInstanceState.getSerializable("id");
+                }
                 title = title_input.getText().toString().trim();
                 ddl = Date_input.getText().toString().trim();
                 notes = notes_input.getText().toString().trim();
                 myDB.updateData(id, title, ddl, notes);
+                finish();
             }
         });
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmDialog();
+                MyDatabaseHelper myDB = new MyDatabaseHelper(UpdateActivity.this);
+
+                if( savedInstanceState==null){
+
+                    Bundle extras = getIntent().getExtras();
+                    if (extras==null){
+                        id=null;
+                    }else   {
+                        id=extras.getString("id");
+                    }
+                }else{
+                    id=(String) savedInstanceState.getSerializable("id");
+                }
+                myDB.deleteOneRow(id);
+                finish();
             }
         });
 
     }
 
-    void getAndSetIntentData(){
+    /*void getAndSetIntentData(){
         if(getIntent().hasExtra("id") && getIntent().hasExtra("title") &&
                 getIntent().hasExtra("Deadline") && getIntent().hasExtra("notes")){
             //Getting Data from Intent
@@ -78,7 +110,7 @@ public class UpdateActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -1,15 +1,18 @@
 package com.example.a9ayadli;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddActivity extends AppCompatActivity {
     EditText title_input, notes_input, Date_input;
-    Button add_button;
+    AppCompatButton add_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +29,12 @@ public class AddActivity extends AppCompatActivity {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
                 myDB.addNotes(title_input.getText().toString().trim(),
                         Date_input.getText().toString().trim(),
-                        notes_input.getText().toString().trim());
-
+                        notes_input.getText().toString().trim()
+                );
+//                Toast.makeText(AddActivity.this, "chbibaba", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
-
     }
 }
