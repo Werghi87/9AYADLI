@@ -1,6 +1,5 @@
 package com.example.a9ayadli;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,16 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+
     public Context context;
     public Activity activity;
     public ArrayList note_id, note_title, note_deadline, note_notes;
 
-    CustomAdapter(MainActivity mainActivity, Context context,
+    CustomAdapter(Activity activity, Context context,
                   ArrayList note_id,
                   ArrayList note_title,
                   ArrayList note_deadline,
                   ArrayList note_notes) {
         this.context = context;
+        this.activity = activity;
         this.note_deadline = note_deadline;
         this.note_id = note_id;
         this.note_notes = note_notes;
