@@ -43,6 +43,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
 
     }
+
     void addNotes(String title,String date, String note){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -70,12 +71,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
     void updateData(String row_id, String title, String date, String note){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_TITLE, title);
-        cv.put(COLUMN_DEADLINE, date);
-        cv.put(COLUMN_DO, note);
+        if (title.length()>0){
+            cv.put(COLUMN_TITLE, title);
+        }
+        if(date.length()>0){
+            cv.put(COLUMN_DEADLINE, date);
+        }
+        if(note.length()>0){
+            cv.put(COLUMN_DO, note);
+        }
+
 
         long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{row_id});
         if(result == -1){
@@ -85,6 +94,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
 
     }
+
+
 
     void deleteOneRow(String row_id){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -96,9 +107,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+
     void deleteAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + TABLE_NAME + "'");
     }
 
 }
